@@ -14,147 +14,80 @@ In this tutorial:
 1. Improving the code using RequestAnimationFrame
 
 
-1. **HTML - HyperText Markup Language.**
+1. **Initializing Canvas**
 
-    First things first is to create a file ```index.html``` and insert the basic HTML5 structure of a web page:
-
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>Page title goes here</title>
-            </head>
-            <body>
-            </body>
-        </html>
-
-So lets explain each tag:
-
-  1. ```<!DOCTYPE html>``` - here we are declaring that the document contains HTML5 markup.
-  2. ```<head>``` - here you will store links to or definitions of scripts and stylesheets. Any description of the page content goes here, such as page title. Search engines will use this to add the page to their search index. This must be the first element in the ```<html>``` element.
-  3. ```<title>``` - this defines the page title, which will be shown in the browser tab or title bar.
-  4. ```<body>``` - this holds the content of the HTML page. This must be the second element in the ```<html>``` element.
-
-At this stage opening ```index.html``` in the browser will produce an empty page with the tab title "Page title goes here".
+ 
 
 
-Earlier I mentioned that I wanted the page to have an input field and a button to process the input on click. Looking at the [HTML 5 Element List](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/HTML5_element_list), we can see that within the ```<form>``` we have ```<input>``` and ```<button>``` elements available to us. We will also need a ```<label>``` to caption the ```<input>```. Here is them all added:
+ Particles.js:
 
-        <!DOCTYPE html>
-        <html>
-            <head>
-                <title>Meow</title>
-            </head>
-            <body>
-            <div class="form-container">
-                <form id="meow-form">
-                    <label>Type Anything:</label>
-                    <input id="meow-input" name="field" maxlength="255" type="text" autocomplete="off">
-                    <button type="submit">Go!</button>
-                    </form>
-                </div>
-            </body>
-        </html>
-
-The form is within a container ```<div>```, it can also be called a content ```<div>```. Placing the form in the container will allow for more sophisticated CSS styling and to place the elements anywhere we want on the page with ease. There are a couple of thigs to explain here:
-
-  1. ```class``` and ```id``` attributes. The ```class``` attribute in the ```<div>``` element assigns the element to a named class (in this case ``form-container``). Multiple elements in the document can have the same class value, for any unique elements ```id``` is more appropriate. (Note: ```id``` must be unique in the document). However in this case, ```id``` could have also been used. I found a simple explanation of where to use which [here](http://www.impressivewebs.com/difference-class-id-css/). Both ```id``` and ```class``` are used as selectors in the stylesheet to style the elements (more on this later).
-  2. ```<label>``` - simply has text to be used as a caption.
-  3. ```<input>``` - we have given the input an ```id``` so that it can be styled later on.
-  4. ```<button>``` - setting the ```type="submit"``` will submit form data when the button is pressed. This is the default option if nothing is specified.
-
-Loading the ```index.html``` in the browser now gives us this:
-
-    ![](http://i.imgur.com/ExVY6i4.png)
-
-  We are now ready to style the page.
-
-2. **CSS - Cascading Style Sheets.**
-
-CSS describes how a structured element (HTML or XML) must be rendered on screen.
-
-CSS can be:
-
- 1. *inline* - using the style attribute in HTML elements.
- 2. *internal* - using the ```<style>``` element in the ```<head>``` section.
- 3. *external* - using an external ```.css``` file.
-
- I am putting all CSS in an external ```style.css```:
-
-First we can set the body of the page to have a background image:
-
-            body {
-        	    background: url(images/lined_paper.png);
+        // declare vars
+    var ps = [];
+    var MAX_NUM = 500;
+    var colors = [ '#69D2E7', '#A7DBD8', '#E0E4CC', '#F38630', '#FA6900', '#FF4E50', '#F9D423' ];
+    var FPS = 60;
+    
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    
+    spawn();
+    
+    
+    
+    //create the particles
+    function spawn() {
+      for(var i=0; ps.length < MAX_NUM; i++) {
+        ps[i] = { x: Math.random()*window.innerWidth,
+                  y: Math.random()*window.innerHeight,
+                  r: Math.random()*5,
+                  c: colors[Math.floor(Math.random()*colors.length)]
+                };                  
+       }
+    }
+    
+    function update() {
+        for(var i=0; i<ps.length; i++) {
+            ps[i].y += 1;
+            ps[i].x += -1 + (Math.random() * 3);
+            //ps[i].r = Math.random()*5;
+        }
+    }
+    
+    function reset() {
+        //reset the x and y coordinates if leaves the canvas
+        for(var i=0; i<ps.length; i++) {
+            //reset if y or coordinate has left the canvas
+            if(ps[i].y > c.height) {
+                ps[i].y = Math.random()*window.innerHeight;
+                ps[i].color = colors[Math.floor(Math.random() * colors.length)];
             }
-
-The whole expression is a ***rule***, and ***body*** is a selector, which selects which element the rules apply to.
-
-Now we want to give the whole form a width and set the font. Earlier we have made the div that contained the form be of class "form-container", in order to select elements of that class we have to put a ```.``` in front of the class name:
-
-            .form-container {
-            	margin: 90px auto;
-            	width: 400px;
-            	font-family: "Roboto Condensed";
+            //reset if x or coordinate has left the canvas
+            if(ps[i].x > c.width || ps[i].x < 0){
+              ps[i].x = Math.random()*window.innerWidth;
+              ps[i].color = colors[Math.floor(Math.random() * colors.length)];
             }
-
-We can give the input a desired width:
-
-            input {
-            	width: 200px;
-            }
-
-And style the button:
-
-            button {
-            	background-color:#ED518A;
-            	height:37px;
-            	border: 3px solid #fff;
-            	color: #fff;
-            	display: inline-block;
-            }
-
-By saying display the button as an ```inline-block``` we are actually telling it to stay on the same line.
-
-Now we need to add a line in the ```<head>```  to load the external ``.css`` file and to load the custom Google font (the Google font link can be generated on [Google Fonts](http://www.google.com/fonts) website):
-
-        <head>
-            <title>Meow</title>
-            <link href="normalize.css" rel="stylesheet">
-            <link rel="stylesheet" href="style.css">
-            <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:700,400' rel='stylesheet' type='text/css'>
-        </head>
-
- After applying all the changes, our web page should now look like this:
-    ![](http://i.imgur.com/vOhv3Li.png)
-
-Trying this in a few different browsers may yeld a different result, but we can help the page to render consistently across different browsers by using something called [Normalize.css](http://necolas.github.io/normalize.css/). You can see that I have already included normalize.css in the ```<head>```. There is also a project called [reset.css](http://www.cssreset.com/), there are many different versions you can try, but [here](http://stackoverflow.com/a/8357635) an overview of the main differences between ```reset.css``` and ```normalize.css```.
-
-3. **JavaScript** is an (quasi) object-oriented language, widely used as a scripting language for web pages.
-               **TO DO**   **TO DO**   **TO DO**   **TO DO**   **TO DO**   **TO DO**   **TO DO**
-
-
-        <script type="text/javascript" src="meow.js"></script>
-		<script type="text/javascript">
-			var form = document.getElementById("meow-form");
-			form.addEventListener('submit', send, true);
-		</script>
-
-
- meow.js:
-
-        function send(event) {
-        	var input_text = document.getElementById("meow-input").value;
-        	document.getElementById("meow-output").value = meow(50,input_text);
-        	event.preventDefault();
-        };
-
-        function meow(times, input_text){
-        	var output = new Array(times);
-        	for (i=0; i< times; i++){
-        		output[i] = " meow " + input_text;
-        	}
-        	return output;
-        };
-
+        }
+    }
+      
+    
+    function draw() {
+    
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+    
+      for(var i=0; i<ps.length; i++) {
+        ctx.beginPath();
+    		ctx.arc( ps[i].x, ps[i].y, ps[i].r, 0, 6);
+    		ctx.fillStyle = ps[i].c;
+    		ctx.fill(); 
+      }
+    }
+    
+    setInterval(function() {
+      update();
+      draw();
+      reset();
+    }, 30);
 **Some useful resources:**
   1. [MDN - Mozilla Developer Network](https://developer.mozilla.org/en-US/)
   2. [Can I Use...](http://caniuse.com/)
