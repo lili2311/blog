@@ -10,13 +10,14 @@ In this tutorial:
 
 1. Initializing a Canvas
 2. Drawing circles
-1. Simple animation for particle movement using SetInterval
-1. Improving the code using RequestAnimationFrame
+3. Simple animation for particle movement using SetInterval
+4. Improving the code using RequestAnimationFrame
 
 
 1. **Initializing Canvas**
-
- 
+2. **Drawing circles**
+3. **Simple animation for particle movement using SetInterval**
+4. **Improving the code using RequestAnimationFrame**
 
 
  Particles.js:
