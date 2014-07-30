@@ -16,10 +16,8 @@ In this tutorial:
 
 **1. Initializing Canvas**
 
-Introduced in HTML5, the HTML  ```<canvas>```  element can be used to draw graphics via scripting in JavaScript. The ``` <canvas>```  element isn't supported in some older browsers, but is supported in recent versions of all major browsers. More information can be found on here: [http://caniuse.com/#feat=canvas](http://caniuse.com/#feat=canvas)
+Introduced in HTML5, the HTML  ```<canvas>```  element can be used to draw graphics via scripting in JavaScript. The ``` <canvas>```  element isn't supported in some older browsers, but is supported in recent versions of all major browsers. More information can be found on here: [http://caniuse.com/#feat=canvas](http://caniuse.com/#feat=canvas). ```<canvas>``` element requires the closing tag, like so:
 
-Example:
-        
     <canvas id="myCanvas"></canvas>
 
 This creates a blank canvas for us to use. You can set the with and height at this point:
@@ -28,11 +26,14 @@ This creates a blank canvas for us to use. You can set the with and height at th
     
 If not specified, **width** defaults to **300px** and **height** defaults to **150px**.
 
-Some older versions of browsers do not support the ```<canvas>``` element, we can provide fallback content. We just provide alternate content inside the ```<canvas>``` element. Browsers which don't support ```<canvas>``` will ignore the container and render the fallback content inside it, otehrwise they will render the canvas normally.
+Some older versions of browsers do not support the ```<canvas>``` element, we can provide fallback content. We just provide alternate content inside the ```<canvas>``` element. Browsers which don't support ```<canvas>``` will ignore the container and render the fallback content inside it, otehrwise they will render the canvas normally:
         
     <canvas id="myCanvas" width="500" height="300"></canvas>
 
-
+You can even include a different element inside the canvas element:
+        
+    <canvas id="myCanvas" width="500" height="300"><img src="img/example.png" width="500" height="300" alt="Example Image"></canvas>
+    
  Particles.js:
 
         // declare vars
