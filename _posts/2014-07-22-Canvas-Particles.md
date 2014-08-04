@@ -18,23 +18,33 @@ In this tutorial:
 
 Introduced in HTML5, the HTML  ```<canvas>```  element can be used to draw graphics via scripting in JavaScript. The ``` <canvas>```  element isn't supported in some older browsers, but is supported in recent versions of all major browsers. More information can be found on here: [http://caniuse.com/#feat=canvas](http://caniuse.com/#feat=canvas). ```<canvas>``` element requires the closing tag, like so:
 
+    {% codeblock lang:html %}
     <canvas id="myCanvas"></canvas>
+    {% endcodeblock %}
 
 This creates a blank canvas for us to use. You can set the with and height at this point:
+
+    {% codeblock lang:html %}
     
     <canvas id="myCanvas" width="500" height="300"> JavaScript Particles Canvas </canvas>
+    {% endcodeblock %}
     
 If not specified, **width** defaults to **300px** and **height** defaults to **150px**.
 
 Some older versions of browsers do not support the ```<canvas>``` element, we can provide fallback content. We just provide alternate content inside the ```<canvas>``` element. Browsers which don't support ```<canvas>``` will ignore the container and render the fallback content inside it, otehrwise they will render the canvas normally:
+    {% codeblock lang:html %}
         
     <canvas id="myCanvas" width="500" height="300"></canvas>
+    {% endcodeblock %}
 
 You can even include a different element inside the canvas element:
-        
+    {% codeblock lang:html %}
+  
     <canvas id="myCanvas" width="500" height="300"><img src="img/example.png" width="500" height="300" alt="Example Image"></canvas>
-    
+        {% endcodeblock %}
+
  Particles.js:
+    {% codeblock lang:js %}
 
         // declare vars
     var ps = [];
@@ -103,6 +113,8 @@ You can even include a different element inside the canvas element:
       draw();
       reset();
     }, 30);
+    {% endcodeblock %}
+
 **Some useful resources:**
   1. [MDN - Mozilla Developer Network](https://developer.mozilla.org/en-US/)
   2. [Can I Use...](http://caniuse.com/)
